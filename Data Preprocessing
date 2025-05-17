@@ -1,0 +1,28 @@
+        df[column] = LabelEncoder().fit_transform(df[column]) # Remove customerID
+df.drop('customerID', axis=1, inplace=True)
+
+# Convert TotalCharges to numeric
+df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
+df['TotalCharges'].fillna(df['TotalCharges'].median(), inplace=True)
+
+# Encode categorical variables
+for column in df.select_dtypes(include=['object']).columns:
+    if df[column].nunique() == 2:
+
+    else:
+        df = pd.get_dummies(df, columns=[column])
+
+# Scale numerical features
+scaler = StandardScaler()
+df[['tenure', 'MonthlyCharges', 'TotalCharges']] = scaler.fit_transform(df[['tenure', 'MonthlyCharges', 'TotalCharges']])
+
+# Define features and target
+X = df.drop('Churn', axis=1)
+y = df['Churn']
+
+# Train/test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+
+
+
+
