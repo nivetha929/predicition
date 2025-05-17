@@ -1,0 +1,4 @@
+import pickle
+pickle.dump(model, open("xgb_model.pkl", "wb"))
+pickle.dump(scaler, open("scaler.pkl", "wb"))
+
