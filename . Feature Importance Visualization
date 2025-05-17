@@ -1,0 +1,9 @@
+importances = model.feature_importances_
+indices = np.argsort(importances)[-10:]  # Top 10
+features = X.columns[indices]
+
+plt.figure(figsize=(10,6))
+sns.barplot(x=importances[indices], y=features)
+plt.title("Top 10 Important Features")
+plt.show()
+
