@@ -1,0 +1,33 @@
+Save this as app.py for deployment with Streamlit.
+
+import streamlit as st
+import numpy as np
+import pickle
+
+# Load model and scaler
+model = pickle.load(open('xgb_model.pkl', 'rb'))
+scaler = pickle.load(open('scaler.pkl', 'rb'))
+
+st.title("Customer Churn Prediction")
+
+# Example inputs
+tenure = st.slider("Tenure (months)", 0, 72, 12)
+MonthlyCharges = st.slider("Monthly Charges", 0, 200, 70)
+TotalCharges = tenure * MonthlyCharges
+
+# Dummy binary features for example
+SeniorCitizen = st.selectbox("Senior Citizen", ['No', 'Yes']) == 'Yes'
+Partner = st.selectbox("Has Partner", ['No', 'Yes']) == 'Yes'
+PhoneService = st.selectbox("Phone Service", ['No', 'Yes']) == 'Yes'
+
+# Feature Vector (update based on full feature list)
+input_data = np.array([[tenure, MonthlyCharges, TotalCharges, int(SeniorCitizen), int(Partner), int(PhoneService)]])
+input_scaled = scaler.transform(input_data)
+
+if st.button("Predict"):
+    prediction = model.predict(input_scaled)
+    st.write("Prediction: ", "Churn" if prediction[0] == 1 else "No Churn")
+
+
+
+7. Save Model and Scaler
