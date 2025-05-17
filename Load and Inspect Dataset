@@ -1,0 +1,6 @@
+df = pd.read_csv('Telco-Customer-Churn.csv')
+print(df.head())
+print(df.info())
+
+
+
